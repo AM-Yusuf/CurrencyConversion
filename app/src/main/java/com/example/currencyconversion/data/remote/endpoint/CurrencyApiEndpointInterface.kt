@@ -8,6 +8,15 @@ import retrofit2.http.GET
 
 interface CurrencyApiEndpointInterface {
 
+    /**
+     * Currency name list end point
+     */
+    @GET("currencies.json?app_id=0cc886cd32264016ae6c5aefee9b8403")
+    suspend fun getCurrencyNameList(): Response<Any>
+
+    /**
+     * Latest Currency rate end point
+     */
     @GET("latest.json?app_id=0cc886cd32264016ae6c5aefee9b8403")
-    suspend fun getCurrencyList(): Response<CurrencyConversionRate>
+    suspend fun getCurrencyRate(): Response<CurrencyConversionRate>
 }

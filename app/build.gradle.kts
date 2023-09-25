@@ -104,5 +104,6 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation(kotlin("reflect"))
 
 }

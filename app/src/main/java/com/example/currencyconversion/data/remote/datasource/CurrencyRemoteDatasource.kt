@@ -9,8 +9,14 @@ class CurrencyRemoteDatasource @Inject constructor(
     private val endpoint: CurrencyApiEndpointInterface
 ): BaseDataSource() {
 
-    //suspend fun getCurrencyRate() = endpoint.getCurrencyRate()
+    /**
+     * Currency rate api call
+     */
+    suspend fun getCurrencyRate() = getResult { endpoint.getCurrencyRate() }
 
-    suspend fun getCurrencyList() = getResult { endpoint.getCurrencyList() }
+    /**
+     * currency name list api call
+     */
+    suspend fun getCurrencyNameList() = getResult { endpoint.getCurrencyNameList() }
 
 }

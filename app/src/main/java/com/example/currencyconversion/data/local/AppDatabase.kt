@@ -17,8 +17,8 @@ import com.example.currencyconversion.util.DB_VERSION
 )
 
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun currencyDao(): CurrencyDao
     abstract fun ratesDao(): RatesDao
+    abstract fun currencyDao(): CurrencyDao
 
     companion object {
         @Volatile
