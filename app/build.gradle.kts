@@ -83,7 +83,6 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")  // Room compiler
 
 
-
     // Hilt
     val hiltVersion = "2.48"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
@@ -103,7 +102,13 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
 
+    // Kotlin coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Kotlin reflection
     implementation(kotlin("reflect"))
+
+    // Livedata
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
 }

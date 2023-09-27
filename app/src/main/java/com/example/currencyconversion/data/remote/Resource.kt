@@ -29,7 +29,7 @@ data class Resource<out T>(
             return Resource(status = Status.ERROR, data = data, printRequest = printRequest, message = message, code = code)
         }
 
-        fun <T> loading(data: T? = null, printRequest: String): Resource<T> {
+        fun <T> loading(data: T? = null, printRequest: String = ""): Resource<T> {
             return Resource(status = Status.LOADING, data = data, printRequest = printRequest, message = null )
         }
 

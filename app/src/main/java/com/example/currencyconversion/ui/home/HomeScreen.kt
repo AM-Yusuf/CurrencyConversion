@@ -47,7 +47,7 @@ fun HomeScreen(
 
         var isExpanded by remember { mutableStateOf(false) }
 
-        
+        /**User input field**/
         TextField(
             modifier = Modifier
                 .padding(10.dp)
@@ -62,11 +62,13 @@ fun HomeScreen(
             )
         )
 
+
+        /**DropDown menu for Currency selection**/
         ExposedDropdownMenuBox(
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(end = 10.dp),
-            expanded = state.isExpanded,
+            expanded = isExpanded,
             onExpandedChange = { isExpanded = !isExpanded }
         ) {
 
@@ -99,6 +101,7 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
+        /** Conversion result list view **/
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,

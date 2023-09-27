@@ -1,6 +1,7 @@
 package com.example.currencyconversion.data.remote.datasource
 
 import com.example.currencyconversion.data.remote.endpoint.CurrencyApiEndpointInterface
+import com.example.currencyconversion.util.APP_ID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,7 +13,7 @@ class CurrencyRemoteDatasource @Inject constructor(
     /**
      * Currency rate api call
      */
-    suspend fun getCurrencyRate() = getResult { endpoint.getCurrencyRate() }
+    suspend fun getCurrencyRate() = getResult { endpoint.getCurrencyRate(APP_ID) }
 
     /**
      * currency name list api call

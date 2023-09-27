@@ -1,7 +1,6 @@
 package com.example.currencyconversion.data.remote
 
 import com.example.currencyconversion.util.API_VERSION
-import com.example.currencyconversion.util.APP_ID
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException

@@ -5,8 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "Rates")
 data class Rates(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey(autoGenerate = false)
     val currencyCode: String,
-    val currencyRate: Double
+    val currencyRate: Float
 )
