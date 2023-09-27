@@ -89,9 +89,9 @@ fun HomeScreen(
 
                 state.currencyList.forEach { currencyRate ->
                     DropdownMenuItem(
-                        text = { Text(text = currencyRate.currencyName) },
+                        text = { Text(text = currencyRate.currencyCode) },
                         onClick = {
-                            event(OnChangeCurrency(currencyRate.currencyName))
+                            event(OnChangeCurrency(currencyRate.currencyCode))
                             isExpanded = false
                         }
                     )
@@ -113,7 +113,6 @@ fun HomeScreen(
                     items(state.resultantValue.size) {
                         ConversionsListCell(state.resultantValue[it])
                     }
-
                 }
             } else {
                 CircularProgressIndicator()

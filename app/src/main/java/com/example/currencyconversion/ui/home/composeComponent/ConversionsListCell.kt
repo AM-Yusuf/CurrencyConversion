@@ -12,13 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.currencyconversion.data.model.CurrencyRates
+import com.example.currencyconversion.data.entities.Rate
 
 @Composable
 fun ConversionsListCell(
-    currencyRates: CurrencyRates
+    currencyRates: Rate
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -30,7 +29,7 @@ fun ConversionsListCell(
     ) {
         Text(
             modifier = Modifier.padding(start = 10.dp),
-            text = currencyRates.currencyName
+            text = currencyRates.currencyCode
         )
         Text(
             modifier = Modifier.padding(start = 10.dp),

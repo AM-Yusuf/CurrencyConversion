@@ -3,15 +3,15 @@ package com.example.currencyconversion.ui.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.currencyconversion.data.entities.RateX
+import com.example.currencyconversion.data.entities.Rate
 import com.example.currencyconversion.data.model.CurrencyCodeName
-import com.example.currencyconversion.data.model.CurrencyRates
 import com.example.currencyconversion.data.remote.Resource
 import com.example.currencyconversion.data.repository.CurrencyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -35,38 +35,22 @@ class HomeViewModel @Inject constructor(
      * Initialization
      */
     init {
-        getCurrencyList()
+        getCurrencyRates()
     }
 
 
     /**
      * Get currency rate(Api call)
      */
-    private fun getCurrencyList() {
-
+    private fun getCurrencyRates() {
         viewModelScope.launch(Dispatchers.IO) {
-
-            val rateList = currencyRepository.getCurrencyRate()
-
-            rateList?.let {
-
-                val tempList: MutableList<CurrencyRates> = mutableListOf()
-
-                // Use Kotlin reflection to get all properties of the Currency class
-
-                val currencyList = RateX::class.memberProperties.map { prop ->
-                    prop.name to prop.get(it).toString().toFloat()
-                }
-
-                currencyList.forEach { (currencyName, rate) ->
-                   tempList.add(CurrencyRates(currencyName, rate))
-                }
-
+            val flowRates = currencyRepository.getCurrencyRates()
+            flowRates.collectLatest { rates ->
                 _homeScreenState.update {
-                    it.copy(currencyList = tempList)
+                    it.copy(currencyList = rates)
                 }
+                currencyConversion()
             }
-            currencyConversion()
         }
     }
 
@@ -145,7 +129,7 @@ class HomeViewModel @Inject constructor(
      */
     private fun currencyConversion() {
         val inputtedValue = _homeScreenState.value.inputtedAmount
-        val userInput = if (inputtedValue.isNotEmpty()) inputtedValue.toFloat() else 0f
+        val validUserInput = if (inputtedValue.isNotEmpty()) inputtedValue.toFloat() else 0f
 
 
         val currencyCode = _homeScreenState.value.selectedExchangeCode
@@ -157,11 +141,11 @@ class HomeViewModel @Inject constructor(
         }
 
 
-        val tempList: MutableList<CurrencyRates> = mutableListOf()
+        val tempList: MutableList<Rate> = mutableListOf()
 
-        _homeScreenState.value.currencyList.forEach {(currencyName, rate) ->
-            val result = ( rate / baseCurrencyRate) * userInput
-            tempList.add(CurrencyRates(currencyName, result))
+        _homeScreenState.value.currencyList.forEach {(currencyCode, currencyRate) ->
+            val result = ( currencyRate / baseCurrencyRate) * validUserInput
+            tempList.add(Rate(currencyCode, result))
         }
 
         _homeScreenState.update {

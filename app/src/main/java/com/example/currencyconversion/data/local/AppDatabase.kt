@@ -5,19 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.currencyconversion.data.entities.Currency
-import com.example.currencyconversion.data.entities.Rates
+import com.example.currencyconversion.data.entities.Rate
 import com.example.currencyconversion.util.DATABASE_NAME
 import com.example.currencyconversion.util.DB_VERSION
 
 
 @Database(
-    entities = [Currency::class, Rates::class],
+    entities = [Currency::class, Rate::class],
     version = DB_VERSION,
     exportSchema = false
 )
 
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun ratesDao(): RatesDao
+    abstract fun rateDao(): RateDao
     abstract fun currencyDao(): CurrencyDao
 
     companion object {

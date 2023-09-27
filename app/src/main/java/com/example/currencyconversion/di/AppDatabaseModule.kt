@@ -22,5 +22,5 @@ object AppDatabaseModule {
 
     @Provides
     @Singleton
-    fun provideRatesDao(db: AppDatabase) = db.ratesDao()
+    fun provideRateDao(db: AppDatabase) = db.rateDao()
 }
