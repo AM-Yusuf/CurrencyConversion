@@ -111,4 +111,7 @@ dependencies {
     // Livedata
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
+    // Preference Data Store
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
 }

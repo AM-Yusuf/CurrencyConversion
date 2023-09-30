@@ -1,6 +1,8 @@
 package com.example.currencyconversion.di
 
+import android.content.Context
 import android.util.Log
+import com.example.currencyconversion.data.local.PrefDataStore
 import com.example.currencyconversion.data.remote.AnnotationExclusionStrategy
 import com.example.currencyconversion.data.remote.OkHttpInterceptor
 import com.example.currencyconversion.data.remote.endpoint.CurrencyApiEndpointInterface
@@ -8,6 +10,7 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -53,4 +56,9 @@ object AppModule {
     @Singleton
     fun provideCurrencyApiEndpointInterface(retrofit: Retrofit): CurrencyApiEndpointInterface =
         retrofit.create(CurrencyApiEndpointInterface::class.java)
+
+    
+    @Singleton
+    @Provides
+    fun providePreferencesDatastore(@ApplicationContext appContext: Context): PrefDataStore = PrefDataStore(appContext)
 }
