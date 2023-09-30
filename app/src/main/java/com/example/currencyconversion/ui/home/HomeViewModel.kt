@@ -7,6 +7,7 @@ import com.example.currencyconversion.data.entities.Rate
 import com.example.currencyconversion.data.model.CurrencyCodeName
 import com.example.currencyconversion.data.remote.Resource
 import com.example.currencyconversion.data.repository.CurrencyRepository
+import com.example.currencyconversion.util.LogicUnit
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -133,18 +134,18 @@ class HomeViewModel @Inject constructor(
 
 
         val currencyCode = _homeScreenState.value.selectedExchangeCode
-        var baseCurrencyRate = 1f
+        var selectedCurrencyRatePerUSD = 1f
         _homeScreenState.value.currencyList.forEach{ (currencyName, rate) ->
             if (currencyName == currencyCode){
-                baseCurrencyRate = rate
+                selectedCurrencyRatePerUSD = rate
             }
         }
 
 
         val tempList: MutableList<Rate> = mutableListOf()
 
-        _homeScreenState.value.currencyList.forEach {(currencyCode, currencyRate) ->
-            val result = ( currencyRate / baseCurrencyRate) * validUserInput
+        _homeScreenState.value.currencyList.forEach {(currencyCode, currencyRatePerUSD) ->
+            val result = LogicUnit.currencyConversion(validUserInput, currencyRatePerUSD, selectedCurrencyRatePerUSD)
             tempList.add(Rate(currencyCode, result))
         }
 
