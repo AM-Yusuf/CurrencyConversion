@@ -1,9 +1,10 @@
 package com.example.currencyconversion.util
 
+import com.example.currencyconversion.ui.home.HomeLogicMethod
 import org.junit.Test
 import org.junit.Assert.*
 
-class LogicUnitTest {
+class ExchangeCalculationUnitTest {
 
     /**
      * Currency Conversion unit test.
@@ -17,11 +18,10 @@ class LogicUnitTest {
         val currencyValuePerUSD = 110.48978f // 1 USD = 110.48978 BDT
 
         // Act
-        val result = LogicUnit.currencyConversion(inputtedAmount, currencyRate, currencyValuePerUSD)
+        val result = HomeLogicMethod.currencyConversion(inputtedAmount, currencyRate, currencyValuePerUSD)
 
         // Assert
         assertEquals(result, inputtedAmount)
-
     }
 
     /**
@@ -33,20 +33,19 @@ class LogicUnitTest {
     fun currencyConversion_100usd_to_other() {
         // Arrange
         val inputtedAmount = 100f // user inputted value = 100 USD
-        val currencyRatesPerUSD = listOf(3.67304, 78.127805, 100.78873, 396.684171, 1.806168, 830.0f, 349.842994) // rates per 1 USD
+        val currencyRatesPerUSD = listOf(3.67304, 78.127805, 100.78873, 396.684171, 1.806168, 830.0f, 349.842994) // Mock rates based on 1USD(rates per 1 USD)
         val selectedCurrencyRatePerUSD = 1f // 1 USD
-        val expectedResult = listOf(367.304, 7812.7805, 10078.873, 39668.4171, 180.6168, 83000, 34984.2994) // expected Exchange value
+        val expectedResult = listOf(367.304, 7812.7805, 10078.873, 39668.4171, 180.6168, 83000, 34984.2994) // expected Exchange value based on mock rates
         val results: MutableList<Float> = mutableListOf()
 
         // Act
         currencyRatesPerUSD.forEach { currencyRatePerUSD ->
-            results.add(LogicUnit.currencyConversion(inputtedAmount, currencyRatePerUSD.toFloat(), selectedCurrencyRatePerUSD))
+            results.add(HomeLogicMethod.currencyConversion(inputtedAmount, currencyRatePerUSD.toFloat(), selectedCurrencyRatePerUSD))
         }
 
         // Assert
         results.forEachIndexed { index, result ->
             assertEquals(result.toLong(), expectedResult[index].toLong())
         }
-
     }
 }

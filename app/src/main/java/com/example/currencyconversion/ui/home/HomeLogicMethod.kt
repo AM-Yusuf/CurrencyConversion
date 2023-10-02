@@ -1,6 +1,6 @@
-package com.example.currencyconversion.util
+package com.example.currencyconversion.ui.home
 
-object LogicUnit {
+object HomeLogicMethod {
 
     /**
      * Currency exchange function

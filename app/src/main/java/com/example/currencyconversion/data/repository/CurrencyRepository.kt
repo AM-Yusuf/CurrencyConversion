@@ -8,7 +8,7 @@ import com.example.currencyconversion.data.local.PrefDataStore
 import com.example.currencyconversion.data.local.RateDao
 import com.example.currencyconversion.data.remote.Resource
 import com.example.currencyconversion.data.remote.datasource.CurrencyRemoteDatasource
-import com.example.currencyconversion.util.LogicUnit.isTimestampOlderThan30Minutes
+import com.example.currencyconversion.ui.home.HomeLogicMethod.isTimestampOlderThan30Minutes
 import com.example.currencyconversion.util.isNetworkConnected
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
