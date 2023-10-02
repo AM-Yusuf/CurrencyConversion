@@ -10,10 +10,11 @@ class TimeDifferenceMethodUnitTest {
     fun didNotPassed30MinutesTest() {
 
         // Arrange
-        val thirtyMinutesBeforeFromNow = System.currentTimeMillis() - (30*60*1000)
+        val currentTimeMillis = System.currentTimeMillis()
+        val thirtyMinutesBeforeFromNow = currentTimeMillis - (30*60*1000)
 
         // Act
-        val didPassThirtyMinutes = HomeLogicMethod.isTimestampOlderThan30Minutes(thirtyMinutesBeforeFromNow)
+        val didPassThirtyMinutes = HomeLogicMethod.isTimestampOlderThan30Minutes(thirtyMinutesBeforeFromNow, currentTimeMillis)
 
         // Assert
         assertEquals(false, didPassThirtyMinutes)
@@ -23,10 +24,11 @@ class TimeDifferenceMethodUnitTest {
     fun passed30MinutesTest() {
 
         // Arrange
-        val thirty1MinutesBeforeFromNow = System.currentTimeMillis() - (31*60*1000)
+        val currentTimeMillis = System.currentTimeMillis()
+        val thirty1MinutesBeforeFromNow = currentTimeMillis - (31*60*1000)
 
         // Act
-        val didPassThirtyMinutes = HomeLogicMethod.isTimestampOlderThan30Minutes(thirty1MinutesBeforeFromNow)
+        val didPassThirtyMinutes = HomeLogicMethod.isTimestampOlderThan30Minutes(thirty1MinutesBeforeFromNow, currentTimeMillis)
 
         // Assert
         assertEquals(true, didPassThirtyMinutes)

@@ -117,7 +117,7 @@ fun HomeScreen(
                 LazyColumn {
 
                     items(state.resultantValue.size) {
-                        ConversionsListCell(state.resultantValue[it])
+                        ConversionsListCell(state.resultantValue[it], state.selectedExchangeCode)
                     }
                 }
             } else {

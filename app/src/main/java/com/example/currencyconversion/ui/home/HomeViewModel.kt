@@ -1,11 +1,8 @@
 package com.example.currencyconversion.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.currencyconversion.data.entities.Rate
-import com.example.currencyconversion.data.model.CurrencyCodeName
-import com.example.currencyconversion.data.remote.Resource
+import com.example.currencyconversion.data.model.ExchangeResult
 import com.example.currencyconversion.data.repository.CurrencyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +13,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.reflect.full.memberProperties
 
 /**
  * Home view model.
@@ -61,47 +57,6 @@ class HomeViewModel @Inject constructor(
     }
 
 
-
-    /**
-     * Currency Name list api call
-     * Currently not using.
-     */
-    private fun getCurrencyNameList() {
-        viewModelScope.launch(Dispatchers.IO) {
-
-            val response = currencyRepository.getCurrencyNameList()
-
-            when (response.status) {
-
-                Resource.Status.SUCCESS -> {
-
-
-                    val tempList: MutableList<CurrencyCodeName> = mutableListOf()
-
-                    response.data?.let {
-                        val currencyNameList = CurrencyCodeName::class.memberProperties.map { prop ->
-                            prop.name to prop.get(it as CurrencyCodeName)
-                        }
-
-                        currencyNameList.forEach { (currencyCode, currencyName) ->
-                            tempList.add(CurrencyCodeName(currencyCode, currencyName.toString()))
-                        }
-                    }
-
-                }
-
-                // do other operation depending on the response status
-
-                else -> {
-                    Log.d("API", "Api result fail: ${response.message}")
-                }
-            }
-        }
-    }
-
-
-
-
     /**
      * This API for handling events on the home screen.
      * Get user action as an event and perform the intended action
@@ -143,26 +98,26 @@ class HomeViewModel @Inject constructor(
         val inputtedValue = _homeScreenState.value.inputtedAmount
 
         // validate user input(When user delete all numbers from the field then the default value is 0 )
-        val validUserInput = if (inputtedValue.isNotEmpty()) inputtedValue.toFloat() else 0f
+        val amount: Double = if (inputtedValue.isNotEmpty()) inputtedValue.toDouble() else 0.0
 
         // get user selected currency from the UIState
-        val currencyCode = _homeScreenState.value.selectedExchangeCode
+        val targetCurrency = _homeScreenState.value.selectedExchangeCode
 
         // set the rate of selected currency based on USD.
-        var selectedCurrencyRatePerUSD = 1f
-        _homeScreenState.value.currencyList.forEach{ (currencyName, rate) ->
-            if (currencyName == currencyCode){
-                selectedCurrencyRatePerUSD = rate
+        var targetToUsdRate = 1.0
+        _homeScreenState.value.currencyList.forEach{ (currencyCode, _, rate ) ->
+            if (targetCurrency == currencyCode){
+                targetToUsdRate = rate.toDouble()
             }
         }
 
         // Initiate a temp list of exchange rates.
-        val tempList: MutableList<Rate> = mutableListOf()
+        val tempList: MutableList<ExchangeResult> = mutableListOf()
 
         // perform the exchange operation and add to temp list
-        _homeScreenState.value.currencyList.forEach {(currencyCode, currencyRatePerUSD) ->
-            val result = HomeLogicMethod.currencyConversion(validUserInput, currencyRatePerUSD, selectedCurrencyRatePerUSD)
-            tempList.add(Rate(currencyCode, result))
+        _homeScreenState.value.currencyList.forEach {(currencyCode, currencyName, sourceToUsdRate) ->
+            val result = HomeLogicMethod.convertCurrency(amount, sourceToUsdRate.toDouble(), targetToUsdRate)
+            tempList.add(ExchangeResult(currencyCode, currencyName, result))
         }
 
         // Update the UIState with the exchange results

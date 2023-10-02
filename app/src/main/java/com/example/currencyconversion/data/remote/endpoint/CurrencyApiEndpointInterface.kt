@@ -1,6 +1,7 @@
 package com.example.currencyconversion.data.remote.endpoint
 
 import com.example.currencyconversion.data.model.CurrencyConversionRate
+import com.example.currencyconversion.data.model.CurrencyNameList
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -14,7 +15,7 @@ interface CurrencyApiEndpointInterface {
      * Currency name list end-point
      */
     @GET("currencies.json")
-    suspend fun getCurrencyNameList(@Query("app_id") appId: String): Response<Any>
+    suspend fun getCurrencyNameList(@Query("app_id") appId: String): Response<CurrencyNameList>
 
 
     /**

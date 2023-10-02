@@ -3,6 +3,7 @@ package com.example.currencyconversion.data.local
 import androidx.room.Dao
 import androidx.room.Query
 import com.example.currencyconversion.data.entities.Rate
+import com.example.currencyconversion.data.model.ExchangeData
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -18,5 +19,8 @@ interface RateDao: BaseDao<Rate> {
     // get only one information from the rate table
     @Query("SELECT * FROM rates WHERE currencyCode = :code")
     fun get(code: String): Rate
+
+    @Query("SELECT * FROM rates INNER JOIN currency ON currency.currencyCode = rates.currencyCode")
+    fun getExchangeData(): Flow<List<ExchangeData>>
 
 }
