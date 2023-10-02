@@ -26,7 +26,13 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            buildConfigField("String", "APP_ID", "\"0cc886cd32264016ae6c5aefee9b8403\"")
+        }
+
         release {
+            buildConfigField("String", "APP_ID", "\"0cc886cd32264016ae6c5aefee9b8403\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -43,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.2"

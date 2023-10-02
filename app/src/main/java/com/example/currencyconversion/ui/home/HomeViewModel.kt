@@ -19,13 +19,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.reflect.full.memberProperties
 
+/**
+ * Home view model.
+ * Holding UIState and perform event operation for Home screen.
+ * Fetching Data from remote source and display on Home Scree.
+ */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ): ViewModel() {
 
     /**
-     * Holding homeScreenEvent on the view model. (Stateless ui pattern)
+     * Holding homeScreenState
      */
     private val _homeScreenState = MutableStateFlow(HomeScreenState())
     val homeScreenState = _homeScreenState.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), HomeScreenState())
@@ -33,7 +38,7 @@ class HomeViewModel @Inject constructor(
 
 
     /**
-     * Initialization
+     * Initialization(fetching remote data while opening the home screen)
      */
     init {
         getCurrencyRates()
@@ -42,6 +47,7 @@ class HomeViewModel @Inject constructor(
 
     /**
      * Get currency rate(Api call)
+     * Fetch remote data and pass to UIState
      */
     private fun getCurrencyRates() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -99,24 +105,27 @@ class HomeViewModel @Inject constructor(
 
     /**
      * This API for handling events on the home screen.
-     * @param event Right homeScreen event.
+     * Get user action as an event and perform the intended action
+     * @param event homeScreen event.
      */
     fun onHomeScreenEvent(event: HomeScreenEvent) {
         when(event) {
             is OnChangeCurrency -> {
+                // perform operation when user change currency
                 _homeScreenState.update {
                     it.copy(selectedExchangeCode = event.currencyCode)
                 }
                 currencyConversion()
-
             }
             is OnTypeAmountField -> {
+                // perform operation when user input amount
                 _homeScreenState.update {
                     it.copy(inputtedAmount = event.value)
                 }
                 currencyConversion()
             }
             is OnExpandPullDown -> {
+                //perform operation when user tap on expand button
                 _homeScreenState.update {
                     it.copy(isExpanded = event.isExpanded)
                 }
@@ -126,14 +135,21 @@ class HomeViewModel @Inject constructor(
 
 
     /**
-     * Currency conversion logic
+     * Currency conversion method.
+     * Perform the exchange operation based on the selected value.
      */
     private fun currencyConversion() {
+
+        // get user input from the UIState
         val inputtedValue = _homeScreenState.value.inputtedAmount
+
+        // validate user input(When user delete all numbers from the field then the default value is 0 )
         val validUserInput = if (inputtedValue.isNotEmpty()) inputtedValue.toFloat() else 0f
 
-
+        // get user selected currency from the UIState
         val currencyCode = _homeScreenState.value.selectedExchangeCode
+
+        // set the rate of selected currency based on USD.
         var selectedCurrencyRatePerUSD = 1f
         _homeScreenState.value.currencyList.forEach{ (currencyName, rate) ->
             if (currencyName == currencyCode){
@@ -141,14 +157,16 @@ class HomeViewModel @Inject constructor(
             }
         }
 
-
+        // Initiate a temp list of exchange rates.
         val tempList: MutableList<Rate> = mutableListOf()
 
+        // perform the exchange operation and add to temp list
         _homeScreenState.value.currencyList.forEach {(currencyCode, currencyRatePerUSD) ->
             val result = LogicUnit.currencyConversion(validUserInput, currencyRatePerUSD, selectedCurrencyRatePerUSD)
             tempList.add(Rate(currencyCode, result))
         }
 
+        // Update the UIState with the exchange results
         _homeScreenState.update {
             it.copy(resultantValue = tempList)
         }

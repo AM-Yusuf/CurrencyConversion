@@ -5,6 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 
+// Interceptor class for control api call
 class OkHttpInterceptor: Interceptor {
     @Throws(IOException::class)
 
@@ -13,6 +14,7 @@ class OkHttpInterceptor: Interceptor {
         val newRequest = originalRequest.newBuilder()
 
         if (originalRequest.url.encodedPath.contains("oauth")) {
+            // when need to get an Auth token
             newRequest.url(originalRequest.url.toString().replace(oldValue = "/api/v$API_VERSION", newValue = ""))
         } else {
             if (originalRequest.header("Content-Type") == null) {

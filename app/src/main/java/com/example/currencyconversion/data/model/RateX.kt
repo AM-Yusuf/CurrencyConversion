@@ -1,6 +1,8 @@
-package com.example.currencyconversion.data.entities
+package com.example.currencyconversion.data.model
 
-
+/**
+ * Data class for mapping api response
+ */
 data class RateX(
     val AED: Float = 0.0f,
     val AFN: Float = 0.0f,

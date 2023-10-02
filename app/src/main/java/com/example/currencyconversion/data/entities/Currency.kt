@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// Database entity
 @Entity(tableName = "Currency")
 data class Currency(
     @PrimaryKey

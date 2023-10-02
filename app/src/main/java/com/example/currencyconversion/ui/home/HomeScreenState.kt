@@ -3,7 +3,7 @@ package com.example.currencyconversion.ui.home
 import com.example.currencyconversion.data.entities.Rate
 
 /**
- * State class for HomeScreen
+ * UIState Data Class for HomeScreen
  */
 data class HomeScreenState(
     val currencyList: List<Rate> = emptyList(),

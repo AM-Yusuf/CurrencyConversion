@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.onStart
 
 
 /**
- * using live data
+ * using live data, call an api and store the response to local database
+ * Currently not using()
  */
 fun <T,A> performGetOperation(
     databaseQuery: () -> LiveData<T>,
@@ -40,9 +41,8 @@ fun <T,A> performGetOperation(
 
 
 /**
- * using flow
+ * Not tested yet(trying to build a function to perform api call and store the response in local database using flow)
  */
-
 suspend fun <T, A> performGetOperationTest(
     databaseQuery: suspend () -> T,
     networkCall: suspend () -> Resource<A>,

@@ -3,7 +3,7 @@ package com.example.currencyconversion.data.repository
 import android.content.Context
 import android.util.Log
 import com.example.currencyconversion.data.entities.Rate
-import com.example.currencyconversion.data.entities.RateX
+import com.example.currencyconversion.data.model.RateX
 import com.example.currencyconversion.data.local.PrefDataStore
 import com.example.currencyconversion.data.local.RateDao
 import com.example.currencyconversion.data.remote.Resource
@@ -32,11 +32,14 @@ class CurrencyRepository @Inject constructor(
 
     /**
      * Make api call and save the response to local database
+     * @return list of rates as a flow
      */
     suspend fun getCurrencyRates(): Flow<List<Rate>> {
 
+        // Fetch data from local database
         val result: Flow<List<Rate>> = localDataSource.getAll()
 
+        // if previous api call timeStamp greater then 30 minute and network is connected
         if (context.isNetworkConnected() && isTimestampOlderThan30Minutes(lastApiCallTime)) {
 
             // hit remote source to get te latest currency rate
@@ -83,29 +86,16 @@ class CurrencyRepository @Inject constructor(
             }
 
         } else {
-            Log.d("API_DEBUG", "No network connection or api cal too early")
             // Handling No network connection
+            Log.d("API_DEBUG", "No network connection or api cal too early")
         }
 
         return result
     }
 
+    /**
+     * get currency name and code list
+     */
     suspend fun getCurrencyNameList() = remoteDataSource.getCurrencyNameList()
-
-    suspend fun getCurrencyRate(): RateX? {
-        val response = remoteDataSource.getCurrencyRate()
-        return when(response.status) {
-            Resource.Status.SUCCESS -> {
-                return  response.data?.rates
-            }
-
-            // do other operation depending on the response status
-
-            else -> {
-                Log.d("API","Api result fail: ${response.message}")
-                null
-            }
-        }
-    }
 
 }

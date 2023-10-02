@@ -1,14 +1,13 @@
 package com.example.currencyconversion.data.remote.datasource
 
 import com.example.currencyconversion.data.remote.Resource
-import org.json.JSONObject
 import retrofit2.Response
 
 
 abstract class BaseDataSource {
 
     /**
-     * Get result from call and return generic response
+     * Get result from api call and return generic response
      */
     protected open suspend fun <T> getResult( call: suspend () -> Response<T>): Resource<T> {
         try {

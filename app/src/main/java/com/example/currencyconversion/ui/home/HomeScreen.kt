@@ -29,6 +29,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.currencyconversion.ui.home.composeComponent.ConversionsListCell
 
+/**
+ * Home Screen of the app
+ * @param viewModel pass HomeViewModel
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -72,7 +76,7 @@ fun HomeScreen(
             onExpandedChange = { isExpanded = !isExpanded }
         ) {
 
-
+            // selected value inside Dropdown field
             TextField(
                 value = state.selectedExchangeCode ,
                 onValueChange = { event(OnChangeCurrency(it)) },
@@ -82,6 +86,7 @@ fun HomeScreen(
                 readOnly = true
             )
 
+            // List of selectable items inside DropDown list
             ExposedDropdownMenu(
                 expanded = isExpanded,
                 onDismissRequest = { isExpanded = false }
@@ -99,9 +104,10 @@ fun HomeScreen(
             }
         }
 
+        // space between DropDown menu and Exchange rates scrollable list
         Spacer(modifier = Modifier.height(10.dp))
 
-        /** Conversion result list view **/
+        /** Exchange result scrollable list view **/
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,

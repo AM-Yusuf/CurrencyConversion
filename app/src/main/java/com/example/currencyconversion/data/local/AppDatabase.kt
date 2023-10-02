@@ -10,6 +10,9 @@ import com.example.currencyconversion.util.DATABASE_NAME
 import com.example.currencyconversion.util.DB_VERSION
 
 
+/**
+ * Local database (Room database) builder
+ */
 @Database(
     entities = [Currency::class, Rate::class],
     version = DB_VERSION,

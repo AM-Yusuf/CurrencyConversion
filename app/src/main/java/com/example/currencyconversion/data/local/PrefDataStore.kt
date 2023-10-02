@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 /**
- * Preference data store class
+ * Preference data store class to store app specific data
  * @param context get activity context
  */
 class PrefDataStore(private val context: Context) {

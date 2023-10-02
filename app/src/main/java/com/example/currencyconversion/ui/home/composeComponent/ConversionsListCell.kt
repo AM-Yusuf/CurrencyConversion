@@ -14,6 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.currencyconversion.data.entities.Rate
 
+
+/**
+ * Exchange result view component
+ * @param currencyRates provide currency rate to display into cell
+ */
 @Composable
 fun ConversionsListCell(
     currencyRates: Rate

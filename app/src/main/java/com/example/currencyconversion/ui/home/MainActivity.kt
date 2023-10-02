@@ -12,6 +12,9 @@ import com.example.currencyconversion.ui.home.HomeScreen
 import com.example.currencyconversion.ui.theme.CurrencyConversionTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Main Activity for the app, that display Home screen.
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
